@@ -5,343 +5,500 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-    <title>Antoine's Favorite Games</title>
+    <title>My Favorite Games of All Time</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com.rproxy.goskope.com/css2?family=Inter:wght@400;700;900&display=swap"
+          rel="stylesheet">
     <style>
-        /* Reset & basics */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            color: #fff;
-            background: #111;
-            overflow-x: hidden;
+        /* Custom CSS for animations and styling */
+        html {
             scroll-behavior: smooth;
         }
 
-        /* Fullscreen sections */
-        .section {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
             overflow: hidden;
-        }
-
-        /* Hero section */
-        header.section {
-            background: linear-gradient(135deg, #ff3366, #33ccff);
-            color: #fff;
-            position: relative;
-        }
-
-        header h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        header p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 20px;
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            animation: bounce 1.5s infinite;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(15px);
-            }
-        }
-
-        /* Game section */
-        .game-card {
-            width: 100%;
+            /* Hide scrollbar, JS will handle scrolling */
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
         }
 
-        .game-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .game-card img {
-            max-width: 60%;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            transition: transform 0.5s ease;
-        }
-
-        .game-card img:hover {
-            transform: scale(1.05) rotate(-1deg);
-        }
-
-        h2 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        p {
-            font-size: 1.2rem;
-            max-width: 700px;
-        }
-
-        .tags {
-            margin: 1rem 0;
-        }
-
-        .tag {
-            display: inline-block;
-            background: #ff3366;
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            margin: 0.3rem;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .tag:hover {
-            background: #33ffcc;
-            transform: scale(1.1);
-        }
-
-        .review {
-            font-style: italic;
-            color: #ddd;
-            font-size: 1rem;
-            margin-top: 1rem;
-        }
-
-        /* Footer */
-        footer.section {
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #111;
-            font-size: 0.9rem;
-        }
-
-        /* Scroll snapping */
-        html {
+        /* Container for all sections to enable JS scrolling */
+        .scroll-container {
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
             scroll-snap-type: y mandatory;
         }
 
-        .section {
+        /* Each section will be a snap point */
+        .snap-section {
+            height: 100vh;
+            width: 100%;
             scroll-snap-align: start;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            flex-shrink: 0;
+            /* Prevent sections from shrinking */
         }
 
-        /* Responsive text */
-        @media(max-width:768px) {
-            header h1 {
-                font-size: 2.8rem;
+        .parallax-container {
+            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Games');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .parallax-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .game-content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .game-image {
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .game-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .tag {
+            background-color: #f0f0f0;
+            /* initial background */
+            color: #333;
+            /* initial text color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 0.3em 0.6em;
+            border-radius: 4px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background-color: #333;
+            /* new background on hover */
+            color: #f0f0f0;
+            /* new text color on hover */
+        }
+
+        .tag:hover {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
 
-            header p {
-                font-size: 1.2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            h2 {
-                font-size: 2rem;
-            }
+        /* Custom scrollbar for the container */
+        .scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
 
-            p {
-                font-size: 1rem;
-                max-width: 90%;
-            }
+        .scroll-container::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #60a5fa;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-gray-900 text-white">
 
-    <header class="section">
-        <h1>My Favorite Games</h1>
-        <p>Discover the games that shaped my gaming journey.</p>
-        <div class="scroll-hint">Scroll down ⬇</div>
-    </header>
-
-    <!-- Game Sections -->
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Hades"
-                 alt="Hades">
-            <h2>Hades</h2>
-            <p>An addictive roguelike dungeon crawler where you battle your way out of the underworld.</p>
-            <div class="tags">
-                <span class="tag">Roguelike</span>
-                <span class="tag">Action</span>
-                <span class="tag">Indie</span>
+    <div class="scroll-container">
+        <!-- Hero Section with Parallax -->
+        <header class="snap-section parallax-container">
+            <div class="hero-content">
+                <h1 class="text-5xl md:text-7xl font-black uppercase tracking-wider text-white">My All-Time Favorite
+                    Games</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-300">A journey through the titles that shaped my gaming
+                    world.</p>
             </div>
-            <p class="review">The combat is fluid, the story is engaging, and every run feels rewarding.</p>
-        </div>
-    </div>
+        </header>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Celeste"
-                 alt="Celeste">
-            <h2>Celeste</h2>
-            <p>A precision platformer with a touching story about overcoming inner struggles.</p>
-            <div class="tags">
-                <span class="tag">Platformer</span>
-                <span class="tag">Indie</span>
-                <span class="tag">Challenging</span>
-            </div>
-            <p class="review">Every jump and dash teaches you patience and rewards perseverance.</p>
-        </div>
-    </div>
+        <!-- Main Content -->
+        <main>
+            <!-- Game: Hades -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-4xl font-bold text-blue-500">Hades</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Action
+                                Roguelike</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Hack
+                                and Slash</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Mythology</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Hades is a god-like rogue-like dungeon crawler that combines the
+                            best aspects of Supergiant's critically acclaimed titles. As the immortal Prince of the
+                            Underworld, you'll wield the powers and mythic weapons of Olympus to break free from the
+                            clutches of the god of the dead himself.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"The way Hades weaves narrative into the roguelike loop is
+                                nothing short of genius. Every failure feels like progress, and the characters are
+                                unforgettable. A masterpiece of game design."</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Hades"
+                             alt="Hades Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Undertale"
-                 alt="Undertale">
-            <h2>Undertale</h2>
-            <p>An innovative RPG where your choices and mercy define the outcome.</p>
-            <div class="tags">
-                <span class="tag">RPG</span>
-                <span class="tag">Story-Driven</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">Its charm and humor, combined with a unique combat system, make it unforgettable.</p>
-        </div>
-    </div>
+            <!-- Game: Celeste -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div>
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Celeste"
+                             alt="Celeste Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold text-blue-500">Celeste</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Platformer</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Pixel
+                                Graphics</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Indie</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Celeste is a challenging and narrative-driven platformer about
+                            climbing a mountain. It's a journey of self-discovery, beautifully told through tight
+                            controls, clever level design, and a heartfelt story about mental health.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"Celeste's gameplay is tough but fair, making every screen
+                                cleared a victory. But it's the touching story and incredible soundtrack that elevate it
+                                to a truly special experience."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Hollow+Knight"
-                 alt="Hollow Knight">
-            <h2>Hollow Knight</h2>
-            <p>A beautiful metroidvania full of challenging combat and atmospheric exploration.</p>
-            <div class="tags">
-                <span class="tag">Metroidvania</span>
-                <span class="tag">Adventure</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">The depth of its world and combat make every corner worth exploring.</p>
-        </div>
-    </div>
+            <!-- Game: Undertale -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-4xl font-bold text-blue-500">Undertale</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">RPG</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Story
+                                Rich</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Choices
+                                Matter</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Undertale is a role-playing game where no one has to get hurt. You
+                            control a child who falls into a world of monsters. You can choose to fight, or find a way
+                            to win without violence. Every choice has consequences.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"Undertale completely subverted my expectations of what an
+                                RPG could be. It's charming, funny, and deeply emotional. A game that stays with you
+                                long after you finish it."</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Undertale"
+                             alt="Undertale Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Nine+Sols"
-                 alt="Nine Sols">
-            <h2>Nine Sols</h2>
-            <p>A hack-and-slash action game with stunning visuals and fluid combat mechanics.</p>
-            <div class="tags">
-                <span class="tag">Action</span>
-                <span class="tag">Indie</span>
-                <span class="tag">Hack & Slash</span>
-            </div>
-            <p class="review">The intensity and speed of the combat keep me coming back for more.</p>
-        </div>
-    </div>
+            <!-- Game: Hollow Knight -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div>
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Hollow+Knight"
+                             alt="Hollow Knight Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold text-blue-500">Hollow Knight</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Metroidvania</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Atmospheric</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">2D</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Explore a vast, interconnected world in Hollow Knight. Forge your
+                            own path through the ruined kingdom of Hallownest, battling tainted creatures and
+                            befriending bizarre bugs. Uncover an ancient mystery at the kingdom's heart.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"The world of Hallownest is hauntingly beautiful. The
+                                exploration is incredibly rewarding, and the combat is precise and challenging. An
+                                absolute must-play for any fan of the genre."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Balatro"
-                 alt="Balatro">
-            <h2>Balatro</h2>
-            <p>A quirky indie adventure that blends humor, puzzles, and unique mechanics.</p>
-            <div class="tags">
-                <span class="tag">Adventure</span>
-                <span class="tag">Puzzle</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">Its charm and originality make it a delightful and memorable experience.</p>
-        </div>
-    </div>
+            <!-- Game: Nine Sols -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-4xl font-bold text-blue-500">Nine Sols</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">2D
+                                Action</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Sekiro-like</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Taopunk</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Nine Sols is a hand-drawn 2D action-platformer featuring
+                            Sekiro-inspired deflection-focused combat. Embark on a journey of eastern fantasy, explore
+                            the land once home to an ancient alien race, and follow a vengeful hero's quest to slay the
+                            9 Sols, formidable rulers of this forsaken realm.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"The 'Taopunk' aesthetic is incredible, and the combat is so
+                                satisfying. Every parry feels amazing. It's a fresh take on the 2D action genre that I
+                                can't get enough of."</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Nine+Sols"
+                             alt="Nine Sols Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Return+of+the+Obra+Dinn"
-                 alt="Return of the Obra Dinn">
-            <h2>Return of the Obra Dinn</h2>
-            <p>A mystery adventure where deduction is key to solving the fate of a ship's crew.</p>
-            <div class="tags">
-                <span class="tag">Mystery</span>
-                <span class="tag">Puzzle</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">The art style and detective gameplay are unlike anything else.</p>
-        </div>
-    </div>
+            <!-- Game: Balatro -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div>
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Balatro"
+                             alt="Balatro Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold text-blue-500">Balatro</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Roguelike</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Deckbuilder</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Poker</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Balatro is a poker-inspired roguelike deck builder all about
+                            creating powerful synergies and winning big. Combine valid poker hands with unique Joker
+                            cards to create varied synergies and builds.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"Infinitely replayable and incredibly addictive. The way you
+                                can break the game with crazy combos is pure joy. It's the perfect 'one more run' game."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Clair+Obscur+Expedition+33"
-                 alt="Clair Obscur: Expedition 33">
-            <h2>Clair Obscur: Expedition 33</h2>
-            <p>An atmospheric indie adventure that explores mystery and the unknown.</p>
-            <div class="tags">
-                <span class="tag">Adventure</span>
-                <span class="tag">Exploration</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">The ambiance and exploration make it deeply immersive and unique.</p>
-        </div>
-    </div>
+            <!-- Game: Return of the Obra Dinn -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-4xl font-bold text-blue-500">Return of the Obra Dinn</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Puzzle</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Mystery</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">1-bit</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">A first-person mystery adventure based on exploration and logical
+                            deduction. In 1807, the Obra Dinn, a merchant ship, has drifted into port with damaged sails
+                            and no visible crew. As an insurance investigator, you must find means to board the ship and
+                            uncover the fate of its 60 souls.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"This is peak detective gameplay. The feeling of piecing
+                                together the story is unparalleled. The 1-bit art style is not a gimmick; it's essential
+                                to the experience. A true masterpiece."</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Obra+Dinn"
+                             alt="Return of the Obra Dinn Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                </div>
+            </section>
 
-    <div class="section">
-        <div class="game-card fade-in">
-            <img src="https://placehold.co/1920x1080?text=Inscryption"
-                 alt="Inscryption">
-            <h2>Inscryption</h2>
-            <p>A dark card-based game that blends deck-building with horror and narrative twists.</p>
-            <div class="tags">
-                <span class="tag">Card Game</span>
-                <span class="tag">Horror</span>
-                <span class="tag">Indie</span>
-            </div>
-            <p class="review">Its creativity and tension keep me on edge, making it a thrilling experience.</p>
-        </div>
-    </div>
+            <!-- Game: Clair Obscur: Expedition 33 -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div>
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Clair+Obscur"
+                             alt="Clair Obscur: Expedition 33 Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold text-blue-500">Clair Obscur: Expedition 33</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">RPG</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Turn-Based</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Fantasy</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Clair Obscur: Expedition 33 is a reactive turn-based RPG with
+                            immersive real-time offensive and defensive commands. Embark on a desperate journey as
+                            Gustave and his fellow Expeditioners, as they venture into a surreal new world to destroy
+                            the Paintress before she erases the last of humanity.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"The art style is absolutely breathtaking, inspired by
+                                French art and culture. The reactive turn-based combat looks incredibly engaging, and
+                                the story premise is so unique and melancholic. I can't wait to play this."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <footer class="section">
-        <p>&copy; 2025 Antoine Delia</p>
-    </footer>
+            <!-- Game: Inscryption -->
+            <section class="snap-section">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-4xl font-bold text-blue-500">Inscryption</h2>
+                        <div class="flex flex-wrap gap-2 my-4">
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Card
+                                Battler</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Psychological
+                                Horror</span>
+                            <span
+                                  class="tag bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm font-semibold">Escape
+                                Room</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">Inscryption is an inky black card-based odyssey that blends the
+                            deckbuilding roguelike, escape-room style puzzles, and psychological horror into a
+                            blood-laced smoothie. Darker still are the secrets inscrybed upon the cards.</p>
+                        <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-lg text-white">My Take:</h3>
+                            <p class="text-gray-400 italic">"What a trip. This game is so much more than it seems. The
+                                atmosphere is incredible, and the way the game constantly evolves and breaks the fourth
+                                wall is mind-blowing. Go in blind."</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Inscryption"
+                             alt="Inscryption Game"
+                             class="game-image rounded-lg shadow-2xl w-full h-auto">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="snap-section bg-gray-900 border-t border-gray-800">
+            <p class="text-gray-500">&copy; 2024 My Gaming Journey. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script>
-        // Fade-in on scroll
-        const faders = document.querySelectorAll('.fade-in');
-        const appearOptions = { threshold: 0.2 };
-        const appearOnScroll = new IntersectionObserver(function (entries, observer) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.scroll-container');
+            const sections = document.querySelectorAll('.snap-section');
+            let currentSectionIndex = 0;
+            let isScrolling = false;
+            const scrollThreshold = 800; // ms to wait between scrolls
+
+            // Function to scroll to a specific section
+            const scrollToSection = (index) => {
+                if (index >= 0 && index < sections.length) {
+                    sections[index].scrollIntoView({ behavior: 'smooth' });
+                    currentSectionIndex = index;
                 }
-            });
-        }, appearOptions);
-        faders.forEach(fader => appearOnScroll.observe(fader));
+            };
+
+            // Event listener for mouse wheel
+            container.addEventListener('wheel', (event) => {
+                // Prevent default scroll behavior to manually control it
+                event.preventDefault();
+
+                if (isScrolling) {
+                    return;
+                }
+
+                const scrollDirection = event.deltaY;
+
+                if (scrollDirection > 0) {
+                    // Scrolling down
+                    if (currentSectionIndex < sections.length - 1) {
+                        scrollToSection(currentSectionIndex + 1);
+                    }
+                } else {
+                    // Scrolling up
+                    if (currentSectionIndex > 0) {
+                        scrollToSection(currentSectionIndex - 1);
+                    }
+                }
+
+                // Set a flag to prevent rapid scrolling
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false;
+                }, scrollThreshold);
+            }, { passive: false }); // passive: false is needed for preventDefault
+        });
     </script>
 
 </body>
