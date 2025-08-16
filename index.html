@@ -5,101 +5,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antoine's Favorite Games</title>
 <style>
-    /* Reset & basic styling */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Segoe UI', sans-serif; color:#fff; background:#111; overflow-x:hidden; }
-    h1, h2, h3 { font-family: 'Poppins', sans-serif; }
-    
-    /* Parallax sections */
-    .section {
-        position: relative;
-        min-height: 100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        flex-direction:column;
-        text-align:center;
-        padding:2rem;
-        transition: all 0.5s ease-in-out;
-    }
-    .section:nth-child(odd) { background:#1a1a1a; }
-    .section:nth-child(even) { background:#222; }
-    
-    /* Titles */
-    h1 { font-size:3rem; margin-bottom:1rem; }
-    h2 { font-size:2rem; margin:0.5rem 0; }
-    
-    /* Card */
-    .game-card {
-        background: rgba(0,0,0,0.6);
-        border-radius:15px;
-        padding:2rem;
-        max-width:600px;
-        margin:2rem auto;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        transform: translateY(50px);
-        opacity: 0;
-        transition: all 0.8s ease-in-out;
-    }
-    .game-card.visible { transform: translateY(0); opacity:1; }
+/* Reset & basics */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', sans-serif; color:#fff; background:#111; overflow-x:hidden; scroll-behavior:smooth; }
 
-    /* Game Image */
-    .game-card img {
-        max-width:100%;
-        border-radius:10px;
-        margin-bottom:1rem;
-        transition: transform 0.5s ease;
-    }
-    .game-card img:hover { transform: scale(1.05) rotate(-1deg); }
+/* Fullscreen sections */
+.section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    overflow:hidden;
+}
 
-    /* Tags */
-    .tags {
-        margin: 0.5rem 0;
-    }
-    .tag {
-        display:inline-block;
-        background:#ff3366;
-        padding:0.2rem 0.5rem;
-        border-radius:5px;
-        margin:0.2rem;
-        font-size:0.85rem;
-        transition: all 0.3s;
-    }
-    .tag:hover { background:#33ffcc; transform: scale(1.1); }
+/* Hero section */
+header.section {
+    background: linear-gradient(135deg, #ff3366, #33ccff);
+    color:#fff;
+    position:relative;
+}
+header h1 { font-size:4rem; margin-bottom:1rem; }
+header p { font-size:1.5rem; margin-bottom:2rem; }
+.scroll-hint {
+    position:absolute;
+    bottom:20px;
+    font-size:1.2rem;
+    color:rgba(255,255,255,0.8);
+    animation: bounce 1.5s infinite;
+}
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(15px); }
+}
 
-    /* Review */
-    .review { font-style:italic; margin-top:1rem; color:#ddd; }
+/* Game section */
+.game-card {
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    opacity:0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+.game-card.visible { opacity:1; transform: translateY(0); }
 
-    /* Scroll animations */
-    .fade-in { opacity:0; transform: translateY(50px); transition: all 0.8s ease-in-out; }
-    .fade-in.visible { opacity:1; transform: translateY(0); }
+.game-card img {
+    max-width:60%;
+    border-radius:15px;
+    margin-bottom:1.5rem;
+    transition: transform 0.5s ease;
+}
+.game-card img:hover { transform: scale(1.05) rotate(-1deg); }
 
-    /* Parallax effect */
-    .parallax-bg {
-        position: absolute;
-        top:0; left:0;
-        width:100%;
-        height:100%;
-        background-size:cover;
-        background-position:center;
-        z-index:-1;
-        transform: translateZ(0);
-    }
+h2 { font-size:3rem; margin-bottom:0.5rem; }
+p { font-size:1.2rem; max-width:700px; }
+
+.tags {
+    margin:1rem 0;
+}
+.tag {
+    display:inline-block;
+    background:#ff3366;
+    padding:0.3rem 0.6rem;
+    border-radius:6px;
+    margin:0.3rem;
+    font-size:0.9rem;
+    transition: all 0.3s;
+}
+.tag:hover { background:#33ffcc; transform: scale(1.1); }
+
+.review { font-style:italic; color:#ddd; font-size:1rem; margin-top:1rem; }
+
+/* Footer */
+footer.section {
+    height:60px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    font-size:0.9rem;
+}
+
+/* Scroll snapping */
+html { scroll-snap-type: y mandatory; }
+.section { scroll-snap-align: start; }
+
+/* Responsive text */
+@media(max-width:768px){
+    header h1 { font-size:2.8rem; }
+    header p { font-size:1.2rem; }
+    h2 { font-size:2rem; }
+    p { font-size:1rem; max-width:90%; }
+}
 </style>
 </head>
 <body>
 
 <header class="section">
-    <h1>My Favorite Games of All Time</h1>
-    <p>Here are the games that shaped my gaming life and why I love them.</p>
+    <h1>My Favorite Games</h1>
+    <p>Discover the games that shaped my gaming journey.</p>
+    <div class="scroll-hint">Scroll down ⬇</div>
 </header>
 
-<div class="section" id="games">
-
-    <!-- Game cards -->
+<!-- Game Sections -->
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Hades" alt="Hades">
+        <img src="https://via.placeholder.com/800x400?text=Hades" alt="Hades">
         <h2>Hades</h2>
         <p>An addictive roguelike dungeon crawler where you battle your way out of the underworld.</p>
         <div class="tags">
@@ -109,9 +130,11 @@
         </div>
         <p class="review">The combat is fluid, the story is engaging, and every run feels rewarding.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Celeste" alt="Celeste">
+        <img src="https://via.placeholder.com/800x400?text=Celeste" alt="Celeste">
         <h2>Celeste</h2>
         <p>A precision platformer with a touching story about overcoming inner struggles.</p>
         <div class="tags">
@@ -121,9 +144,11 @@
         </div>
         <p class="review">Every jump and dash teaches you patience and rewards perseverance.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Undertale" alt="Undertale">
+        <img src="https://via.placeholder.com/800x400?text=Undertale" alt="Undertale">
         <h2>Undertale</h2>
         <p>An innovative RPG where your choices and mercy define the outcome.</p>
         <div class="tags">
@@ -133,9 +158,11 @@
         </div>
         <p class="review">Its charm and humor, combined with a unique combat system, make it unforgettable.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Hollow+Knight" alt="Hollow Knight">
+        <img src="https://via.placeholder.com/800x400?text=Hollow+Knight" alt="Hollow Knight">
         <h2>Hollow Knight</h2>
         <p>A beautiful metroidvania full of challenging combat and atmospheric exploration.</p>
         <div class="tags">
@@ -145,9 +172,11 @@
         </div>
         <p class="review">The depth of its world and combat make every corner worth exploring.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Nine+Sols" alt="Nine Sols">
+        <img src="https://via.placeholder.com/800x400?text=Nine+Sols" alt="Nine Sols">
         <h2>Nine Sols</h2>
         <p>A hack-and-slash action game with stunning visuals and fluid combat mechanics.</p>
         <div class="tags">
@@ -157,9 +186,11 @@
         </div>
         <p class="review">The intensity and speed of the combat keep me coming back for more.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Balatro" alt="Balatro">
+        <img src="https://via.placeholder.com/800x400?text=Balatro" alt="Balatro">
         <h2>Balatro</h2>
         <p>A quirky indie adventure that blends humor, puzzles, and unique mechanics.</p>
         <div class="tags">
@@ -169,9 +200,11 @@
         </div>
         <p class="review">Its charm and originality make it a delightful and memorable experience.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Return+of+the+Obra+Dinn" alt="Return of the Obra Dinn">
+        <img src="https://via.placeholder.com/800x400?text=Return+of+the+Obra+Dinn" alt="Return of the Obra Dinn">
         <h2>Return of the Obra Dinn</h2>
         <p>A mystery adventure where deduction is key to solving the fate of a ship's crew.</p>
         <div class="tags">
@@ -181,9 +214,11 @@
         </div>
         <p class="review">The art style and detective gameplay are unlike anything else.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Clair+Obscur+Expedition+33" alt="Clair Obscur: Expedition 33">
+        <img src="https://via.placeholder.com/800x400?text=Clair+Obscur+Expedition+33" alt="Clair Obscur: Expedition 33">
         <h2>Clair Obscur: Expedition 33</h2>
         <p>An atmospheric indie adventure that explores mystery and the unknown.</p>
         <div class="tags">
@@ -193,9 +228,11 @@
         </div>
         <p class="review">The ambiance and exploration make it deeply immersive and unique.</p>
     </div>
+</div>
 
+<div class="section">
     <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/600x300?text=Inscryption" alt="Inscryption">
+        <img src="https://via.placeholder.com/800x400?text=Inscryption" alt="Inscryption">
         <h2>Inscryption</h2>
         <p>A dark card-based game that blends deck-building with horror and narrative twists.</p>
         <div class="tags">
@@ -205,34 +242,25 @@
         </div>
         <p class="review">Its creativity and tension keep me on edge, making it a thrilling experience.</p>
     </div>
-
 </div>
 
 <footer class="section">
-    <p>&copy; 2025 Antoine Delia. All Rights Reserved.</p>
+    <p>&copy; 2025 Antoine Delia</p>
 </footer>
 
 <script>
     // Fade-in on scroll
     const faders = document.querySelectorAll('.fade-in');
-    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+    const appearOptions = { threshold: 0.2 };
     const appearOnScroll = new IntersectionObserver(function(entries, observer){
         entries.forEach(entry => {
-            if(!entry.isIntersecting) return;
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+            if(entry.isIntersecting){
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
         });
     }, appearOptions);
-
     faders.forEach(fader => appearOnScroll.observe(fader));
-
-    // Parallax effect
-    window.addEventListener('scroll', function(){
-        document.querySelectorAll('.parallax-bg').forEach(bg => {
-            const speed = bg.getAttribute('data-speed');
-            bg.style.transform = `translateY(${window.scrollY * speed}px)`;
-        });
-    });
 </script>
 
 </body>
