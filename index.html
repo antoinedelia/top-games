@@ -76,6 +76,37 @@
             width: 100%;
         }
 
+        /* Adjusted for better scaling on big screens */
+        @media (min-width: 1440px) {
+            .game-content-wrapper {
+                max-width: 1500px;
+                padding: 0 4rem;
+            }
+
+            .game-content-wrapper h2 {
+                font-size: 3rem;
+                /* text-5xl */
+                line-height: 1;
+            }
+
+            .game-content-wrapper p {
+                font-size: 1.125rem;
+                /* text-lg */
+                line-height: 1.75rem;
+            }
+
+            .game-content-wrapper h3 {
+                font-size: 1.25rem;
+                /* text-xl */
+                line-height: 1.75rem;
+            }
+
+            .game-content-wrapper .tag {
+                font-size: 1rem;
+                /* text-base */
+            }
+        }
+
         .game-image {
             transition: transform 0.5s ease, box-shadow 0.5s ease;
         }
@@ -87,9 +118,7 @@
 
         .tag {
             background-color: #f0f0f0;
-            /* initial background */
             color: #333;
-            /* initial text color */
             transition: background-color 0.3s ease, color 0.3s ease;
             padding: 0.3em 0.6em;
             border-radius: 4px;
@@ -99,14 +128,7 @@
 
         .tag:hover {
             background-color: #333;
-            /* new background on hover */
             color: #f0f0f0;
-            /* new text color on hover */
-        }
-
-        .tag:hover {
-            background-color: #3b82f6;
-            color: #ffffff;
         }
 
         @keyframes fadeIn {
@@ -158,7 +180,7 @@
         <main>
             <!-- Game: Hades -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div class="order-2 md:order-1">
                         <h2 class="text-4xl font-bold text-blue-500">Hades</h2>
                         <div class="flex flex-wrap gap-2 my-4">
@@ -191,7 +213,7 @@
 
             <!-- Game: Celeste -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div>
                         <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Celeste"
                              alt="Celeste Game"
@@ -223,7 +245,7 @@
 
             <!-- Game: Undertale -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div class="order-2 md:order-1">
                         <h2 class="text-4xl font-bold text-blue-500">Undertale</h2>
                         <div class="flex flex-wrap gap-2 my-4">
@@ -256,7 +278,7 @@
 
             <!-- Game: Hollow Knight -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div>
                         <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Hollow+Knight"
                              alt="Hollow Knight Game"
@@ -287,7 +309,7 @@
 
             <!-- Game: Nine Sols -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div class="order-2 md:order-1">
                         <h2 class="text-4xl font-bold text-blue-500">Nine Sols</h2>
                         <div class="flex flex-wrap gap-2 my-4">
@@ -319,7 +341,7 @@
 
             <!-- Game: Balatro -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div>
                         <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Balatro"
                              alt="Balatro Game"
@@ -350,7 +372,7 @@
 
             <!-- Game: Return of the Obra Dinn -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div class="order-2 md:order-1">
                         <h2 class="text-4xl font-bold text-blue-500">Return of the Obra Dinn</h2>
                         <div class="flex flex-wrap gap-2 my-4">
@@ -382,7 +404,7 @@
 
             <!-- Game: Clair Obscur: Expedition 33 -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div>
                         <img src="https://placehold.co/600x400/1a1a1a/3b82f6?text=Clair+Obscur"
                              alt="Clair Obscur: Expedition 33 Game"
@@ -414,7 +436,7 @@
 
             <!-- Game: Inscryption -->
             <section class="snap-section">
-                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 items-center text-left">
+                <div class="game-content-wrapper grid md:grid-cols-2 gap-12 xl:gap-20 items-center text-left">
                     <div class="order-2 md:order-1">
                         <h2 class="text-4xl font-bold text-blue-500">Inscryption</h2>
                         <div class="flex flex-wrap gap-2 my-4">
