@@ -5,74 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antoine's Favorite Games</title>
 <style>
-/* Reset & basics */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: 'Segoe UI', sans-serif; color:#fff; background:#111; overflow-x:hidden; scroll-behavior:smooth; }
+html { scroll-snap-type: y mandatory; }
 
-/* Fullscreen sections */
 .section {
     position: relative;
     width: 100%;
     height: 100vh;
+    scroll-snap-align: start;
     display:flex;
-    justify-content:center;
     align-items:center;
-    flex-direction:column;
-    text-align:center;
+    justify-content:flex-start;
     overflow:hidden;
 }
 
-/* Hero section */
-header.section {
-    background: linear-gradient(135deg, #ff3366, #33ccff);
-    color:#fff;
-    position:relative;
-}
-header h1 { font-size:4rem; margin-bottom:1rem; }
-header p { font-size:1.5rem; margin-bottom:2rem; }
-.scroll-hint {
+/* Fullscreen background media */
+.bg-media {
     position:absolute;
-    bottom:20px;
-    font-size:1.2rem;
-    color:rgba(255,255,255,0.8);
-    animation: bounce 1.5s infinite;
-}
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(15px); }
+    top:0; left:0; width:100%; height:100%;
+    object-fit:cover;
+    z-index:0;
+    filter: brightness(0.5);
 }
 
-/* Game section */
-.game-card {
-    width:100%;
-    height:100vh;
+/* Diagonal overlay for text */
+.text-overlay {
+    position:absolute;
+    top:0;
+    right:0;
+    width:50%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%);
     display:flex;
     flex-direction:column;
     justify-content:center;
-    align-items:center;
-    text-align:center;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(10px);
-    opacity:0;
-    transform: translateY(50px);
-    transition: all 0.8s ease;
+    padding:3rem;
+    z-index:1;
 }
-.game-card.visible { opacity:1; transform: translateY(0); }
 
-.game-card img {
-    max-width:60%;
-    border-radius:15px;
-    margin-bottom:1.5rem;
-    transition: transform 0.5s ease;
+.text-overlay h2 {
+    font-size:3rem;
+    margin-bottom:1rem;
 }
-.game-card img:hover { transform: scale(1.05) rotate(-1deg); }
-
-h2 { font-size:3rem; margin-bottom:0.5rem; }
-p { font-size:1.2rem; max-width:700px; }
-
-.tags {
-    margin:1rem 0;
+.text-overlay p {
+    font-size:1.2rem;
+    margin-bottom:1rem;
+    line-height:1.5;
 }
+
+.tags { margin-top:1rem; }
 .tag {
     display:inline-block;
     background:#ff3366;
@@ -84,8 +67,6 @@ p { font-size:1.2rem; max-width:700px; }
 }
 .tag:hover { background:#33ffcc; transform: scale(1.1); }
 
-.review { font-style:italic; color:#ddd; font-size:1rem; margin-top:1rem; }
-
 /* Footer */
 footer.section {
     height:60px;
@@ -96,31 +77,35 @@ footer.section {
     font-size:0.9rem;
 }
 
-/* Scroll snapping */
-html { scroll-snap-type: y mandatory; }
-.section { scroll-snap-align: start; }
+/* Fade-in animation for overlay text */
+.text-overlay { opacity:0; transform: translateX(50px); transition: all 1s ease; }
+.text-overlay.visible { opacity:1; transform: translateX(0); }
 
-/* Responsive text */
 @media(max-width:768px){
-    header h1 { font-size:2.8rem; }
-    header p { font-size:1.2rem; }
-    h2 { font-size:2rem; }
-    p { font-size:1rem; max-width:90%; }
+    .text-overlay { width:70%; clip-path:none; padding:2rem; }
+    .text-overlay h2 { font-size:2rem; }
+    .text-overlay p { font-size:1rem; }
 }
 </style>
 </head>
 <body>
 
+<!-- Hero Section -->
 <header class="section">
-    <h1>My Favorite Games</h1>
-    <p>Discover the games that shaped my gaming journey.</p>
-    <div class="scroll-hint">Scroll down ⬇</div>
+    <div class="text-overlay visible">
+        <h1>My Favorite Games</h1>
+        <p>Discover the games that shaped my gaming journey.</p>
+        <p style="opacity:0.8;">Scroll down ⬇</p>
+    </div>
 </header>
 
-<!-- Game Sections -->
+<!-- Game Section Example -->
 <div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Hades" alt="Hades">
+    <!-- Fullscreen background image -->
+    <img class="bg-media" src="https://via.placeholder.com/1920x1080?text=Hades" alt="Hades">
+    
+    <!-- Text overlay on right with diagonal cut -->
+    <div class="text-overlay fade-in">
         <h2>Hades</h2>
         <p>An addictive roguelike dungeon crawler where you battle your way out of the underworld.</p>
         <div class="tags">
@@ -128,13 +113,13 @@ html { scroll-snap-type: y mandatory; }
             <span class="tag">Action</span>
             <span class="tag">Indie</span>
         </div>
-        <p class="review">The combat is fluid, the story is engaging, and every run feels rewarding.</p>
+        <p style="margin-top:1rem; font-style:italic; color:#ddd;">The combat is fluid, the story is engaging, and every run feels rewarding.</p>
     </div>
 </div>
 
 <div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Celeste" alt="Celeste">
+    <img class="bg-media" src="https://via.placeholder.com/1920x1080?text=Celeste" alt="Celeste">
+    <div class="text-overlay fade-in">
         <h2>Celeste</h2>
         <p>A precision platformer with a touching story about overcoming inner struggles.</p>
         <div class="tags">
@@ -142,13 +127,13 @@ html { scroll-snap-type: y mandatory; }
             <span class="tag">Indie</span>
             <span class="tag">Challenging</span>
         </div>
-        <p class="review">Every jump and dash teaches you patience and rewards perseverance.</p>
+        <p style="margin-top:1rem; font-style:italic; color:#ddd;">Every jump and dash teaches you patience and rewards perseverance.</p>
     </div>
 </div>
 
 <div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Undertale" alt="Undertale">
+    <img class="bg-media" src="https://via.placeholder.com/1920x1080?text=Undertale" alt="Undertale">
+    <div class="text-overlay fade-in">
         <h2>Undertale</h2>
         <p>An innovative RPG where your choices and mercy define the outcome.</p>
         <div class="tags">
@@ -156,91 +141,7 @@ html { scroll-snap-type: y mandatory; }
             <span class="tag">Story-Driven</span>
             <span class="tag">Indie</span>
         </div>
-        <p class="review">Its charm and humor, combined with a unique combat system, make it unforgettable.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Hollow+Knight" alt="Hollow Knight">
-        <h2>Hollow Knight</h2>
-        <p>A beautiful metroidvania full of challenging combat and atmospheric exploration.</p>
-        <div class="tags">
-            <span class="tag">Metroidvania</span>
-            <span class="tag">Adventure</span>
-            <span class="tag">Indie</span>
-        </div>
-        <p class="review">The depth of its world and combat make every corner worth exploring.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Nine+Sols" alt="Nine Sols">
-        <h2>Nine Sols</h2>
-        <p>A hack-and-slash action game with stunning visuals and fluid combat mechanics.</p>
-        <div class="tags">
-            <span class="tag">Action</span>
-            <span class="tag">Indie</span>
-            <span class="tag">Hack & Slash</span>
-        </div>
-        <p class="review">The intensity and speed of the combat keep me coming back for more.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Balatro" alt="Balatro">
-        <h2>Balatro</h2>
-        <p>A quirky indie adventure that blends humor, puzzles, and unique mechanics.</p>
-        <div class="tags">
-            <span class="tag">Adventure</span>
-            <span class="tag">Puzzle</span>
-            <span class="tag">Indie</span>
-        </div>
-        <p class="review">Its charm and originality make it a delightful and memorable experience.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Return+of+the+Obra+Dinn" alt="Return of the Obra Dinn">
-        <h2>Return of the Obra Dinn</h2>
-        <p>A mystery adventure where deduction is key to solving the fate of a ship's crew.</p>
-        <div class="tags">
-            <span class="tag">Mystery</span>
-            <span class="tag">Puzzle</span>
-            <span class="tag">Indie</span>
-        </div>
-        <p class="review">The art style and detective gameplay are unlike anything else.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Clair+Obscur+Expedition+33" alt="Clair Obscur: Expedition 33">
-        <h2>Clair Obscur: Expedition 33</h2>
-        <p>An atmospheric indie adventure that explores mystery and the unknown.</p>
-        <div class="tags">
-            <span class="tag">Adventure</span>
-            <span class="tag">Exploration</span>
-            <span class="tag">Indie</span>
-        </div>
-        <p class="review">The ambiance and exploration make it deeply immersive and unique.</p>
-    </div>
-</div>
-
-<div class="section">
-    <div class="game-card fade-in">
-        <img src="https://via.placeholder.com/800x400?text=Inscryption" alt="Inscryption">
-        <h2>Inscryption</h2>
-        <p>A dark card-based game that blends deck-building with horror and narrative twists.</p>
-        <div class="tags">
-            <span class="tag">Card Game</span>
-            <span class="tag">Horror</span>
-            <span class="tag">Indie</span>
-        </div>
-        <p class="review">Its creativity and tension keep me on edge, making it a thrilling experience.</p>
+        <p style="margin-top:1rem; font-style:italic; color:#ddd;">Its charm and humor, combined with a unique combat system, make it unforgettable.</p>
     </div>
 </div>
 
@@ -249,18 +150,17 @@ html { scroll-snap-type: y mandatory; }
 </footer>
 
 <script>
-    // Fade-in on scroll
-    const faders = document.querySelectorAll('.fade-in');
-    const appearOptions = { threshold: 0.2 };
-    const appearOnScroll = new IntersectionObserver(function(entries, observer){
-        entries.forEach(entry => {
-            if(entry.isIntersecting){
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, appearOptions);
-    faders.forEach(fader => appearOnScroll.observe(fader));
+const overlays = document.querySelectorAll('.fade-in');
+const observerOptions = { threshold: 0.3 };
+const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+overlays.forEach(el => observer.observe(el));
 </script>
 
 </body>
